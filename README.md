@@ -1,4 +1,4 @@
-# DACNTT2-TDTU-Ecommerce
+# Ecommerce
 ***Hướng dẫn khởi chạy cho dự án Công nghệ thông tin 2***
 
 *Backend:
