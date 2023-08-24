@@ -1,0 +1,25 @@
+<div class="block ml-auto mr-0 w-32 mt-2"></div>
+<nz-table #basicTable [nzData]="orders">
+  <thead>
+    <tr>
+      <th>OrderId</th>
+      <th>Status</th>
+      <th>Total</th>
+      <th>Products</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>
+        <a
+          class="text-blue-400 font-bold"
+          (click)="navigateToDetail(data.id)"
+          >{{ data.id }}</a
+        >
+      </td>
+      <td>{{ data.status }}</td>
+      <td>{{ data.total }}</td>
+      <td>{{ data.products.length }}</td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -1,0 +1,99 @@
+<form #form="ngForm" class="mt-16 px-64">
+  <div class="overflow-hidden shadow sm:rounded-md">
+    <div class="bg-white px-4 py-5 sm:p-6">
+      <div class="grid grid-cols-6 gap-6">
+        <div class="col-span-12">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Order Id</label
+          >
+          <input
+            type="text"
+            ngModel
+            disabled
+            name="id"
+            [ngModel]="order.id"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-12">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Status</label
+          >
+          <select
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            ngModel
+            name="status"
+            [(ngModel)]="order.status"
+          >
+            <option [value]="item" *ngFor="let item of orderStatus">
+              {{ item }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-span-12">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Total</label
+          >
+          <input
+            type="text"
+            disabled
+            ngModel
+            name="total"
+            [ngModel]="order.total"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-12">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Product lists</label
+          >
+          <nz-table #basicTable [nzData]="order.products">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Thumbnail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td>
+                  <a>{{ data.name }}</a>
+                </td>
+                <td>{{ data.price | currency : "VND" }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>
+                  <img
+                    nz-image
+                    class="w-24"
+                    nzDisablePreview="true"
+                    nzSrc="{{ data.thumbnail }}"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+
+        <div class="px-4 py-3 text-right flex">
+          <button
+            routerLink="/dashboard/order-manage/order"
+            class="p-12 inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Back
+          </button>
+          <button
+            (click)="updateOrderStatus(form.value)"
+            class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

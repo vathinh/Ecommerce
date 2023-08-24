@@ -1,0 +1,46 @@
+<div class="items-center px-12 py-32">
+  <nz-row [nzGutter]="16">
+    <nz-col [nzSpan]="12">
+      <nz-statistic
+        [nzValue]="(ordersSucess.length | number)!"
+        [nzTitle]="'Order Success'"
+      ></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12" class="ml-auto mr-0">
+      <nz-statistic
+        [nzValue]="(ordersSucessTotal | number : '1.0-2')!"
+        [nzTitle]="'Total'"
+      ></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-statistic
+        [nzValue]="(orderFailed.length | number : '1.0-2')!"
+        [nzTitle]="'Order Failed'"
+      ></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-statistic
+        [nzValue]="(orderFailedTotal | number : '1.0-2')!"
+        [nzTitle]="'Total'"
+      ></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-statistic
+        [nzValue]="(orderPending.length | number : '1.0-2')!"
+        [nzTitle]="'Order Pending'"
+      ></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-statistic
+        [nzValue]="(orderPendingTotal | number : '1.0-2')!"
+        [nzTitle]="'Total'"
+      ></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-statistic
+        [nzValue]="(productSold.length | number : '1.0-2')!"
+        [nzTitle]="'Product Sold'"
+      ></nz-statistic>
+    </nz-col>
+  </nz-row>
+</div>

@@ -1,0 +1,188 @@
+<form #form="ngForm" class="mt-16 px-64">
+  <div class="overflow-hidden shadow sm:rounded-md">
+    <div class="bg-white px-4 py-5 sm:p-6">
+      <div class="grid grid-cols-6 gap-6">
+        <div class="col-span-12">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Name</label
+          >
+          <input
+            type="text"
+            ngModel
+            name="name"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-6">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Price</label
+          >
+          <input
+            type="number"
+            ngModel
+            name="price"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-6">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Quantity</label
+          >
+          <input
+            type="number"
+            ngModel
+            name="quantity"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-4">
+          <label for="country" class="block text-sm font-medium text-gray-700"
+            >Condition</label
+          >
+          <select
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            ngModel
+            name="condition"
+          >
+            <option value="New">New</option>
+            <option value="Second-hand">Second-hand</option>
+          </select>
+        </div>
+
+        <div class="col-span-4">
+          <label for="country" class="block text-sm font-medium text-gray-700"
+            >Category</label
+          >
+          <select
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            ngModel
+            name="category"
+          >
+            <option *ngFor="let category of catogories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-span-4">
+          <label class="block text-sm font-medium text-gray-700">Brand</label>
+          <select
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            ngModel
+            name="brand"
+          >
+            <option *ngFor="let brand of brands" [value]="brand.id">
+              {{ brand.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-span-12">
+          <label class="block text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            rows="4"
+            ngModel
+            name="description"
+            class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            placeholder=""
+          ></textarea>
+        </div>
+        <div class="col-span-6">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Upload thumbnail</label
+          >
+          <input
+            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+            type="file"
+            (change)="previewThumbnail($event)"
+          />
+          <p
+            class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+            id="file_input_help"
+          >
+            SVG, PNG, JPG or GIF (MAX. 800x400px).
+          </p>
+        </div>
+        <div class="col-span-6">
+          <img src="{{ thumbnailUrl }}" class="h-24" />
+        </div>
+        <div>
+          <button
+            *ngIf="thumnailUploaded"
+            (click)="uploadThumbnail()"
+            class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          >
+            Upload
+          </button>
+        </div>
+        <div *ngIf="uploadThumbnailSuccess == 1" class="items-center">
+          <p class="text-green-400">Upload success</p>
+        </div>
+        <div *ngIf="uploadThumbnailSuccess == -1">
+          <p class="text-red-500">Upload failed</p>
+        </div>
+
+        <div class="col-span-12">
+          <div>
+            <label class="block mb-2 text-sm font-medium"
+              >Upload product images</label
+            >
+            <input
+              class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+              type="file"
+              (change)="previewImage($event)"
+            />
+            <p
+              class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+              id="file_input_help"
+            >
+              SVG, PNG, JPG or GIF (MAX. 800x400px).
+            </p>
+          </div>
+          <div class="col-span-6">
+            <img src="{{ imageUrl }}" class="h-24" />
+          </div>
+          <div>
+            <button
+              *ngIf="imageUploaded"
+              (click)="uploadImages()"
+              class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 my-2"
+            >
+              Upload
+            </button>
+          </div>
+          <div>
+            <p class="text-black">{{ imageIds.length }} image(s) uploaded</p>
+          </div>
+          <div *ngIf="uploadImageSuccess == 1" class="items-center">
+            <p class="text-green-400">Upload success</p>
+          </div>
+          <div *ngIf="uploadImageSuccess == -1">
+            <p class="text-red-500">Upload failed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-4 py-3 text-right sm:px-6">
+      <button
+        routerLink="/dashboard/product-manage/product"
+        type="submit"
+        class="inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+      >
+        Back
+      </button>
+      <button
+        type="submit"
+        (click)="createProduct(form.value)"
+        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+</form>

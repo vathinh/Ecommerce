@@ -1,0 +1,1 @@
+export { default as ProductResult } from './ProductResult';
