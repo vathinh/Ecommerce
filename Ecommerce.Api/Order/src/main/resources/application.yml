@@ -5,9 +5,9 @@ spring:
   application:
     name: order
   datasource:
-    url: jdbc:postgresql://containers-us-west-76.railway.app:6439/railway
-    username: postgres
-    password: xSfb9Vp4NV75qOGJEZKE
+    url: jdbc:postgresql://localhost:5432/ecom
+    username: root
+    password: root
   jpa:
     hibernate:
       ddl-auto: update

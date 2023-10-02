@@ -5,8 +5,7 @@ spring:
     name: image
   data:
     mongodb:
-      uri: mongodb+srv://bmn:cntt2project@cluster0.xge7gs5.mongodb.net/?retryWrites=true&w=majority
-      database: images
+      uri: mongodb://localhost:27017/images
   servlet:
     multipart:
       max-file-size: 256MB
