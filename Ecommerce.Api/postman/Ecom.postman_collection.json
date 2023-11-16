@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"user\",\n    \"password\": \"user\",\n    \"fullname\": \"user\",\n    \"email\": \"user@mail.com\",\n    \"phone\": 123\n}",
+					"raw": "{\n    \"username\": \"Nguyen\",\n    \"password\": \"user\",\n    \"fullname\": \"user\",\n    \"email\": \"thin1htest@yopmail.com\",\n    \"phone\": 123\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -37,13 +37,59 @@
 			"response": []
 		},
 		{
+			"name": "reset pwd",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"thinhtest@yopmail.com\",\n    \"password\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/v1/auth/resetPassword",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"resetPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "sign in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assuming `responseBody` contains the JSON string you provided\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"// Set the token as an environment variable\r",
+							"pm.environment.set(\"ecomTokene\", jsonData.token);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\" : \"user\",\n    \"password\" : \"user\"\n}",
+					"raw": "{\n    \"username\" : \"Nguyen\",\n    \"password\" : \"123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -65,6 +111,254 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "get Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get cate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update cate",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer  {{ecomToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Updated Category Parent\",\r\n  \"parent\": \"69580385-92c3-4166-a6d9-5b0eeb9fbb8c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/category/512a0879-50cd-4879-8e27-9bb3c7a0a6e0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"512a0879-50cd-4879-8e27-9bb3c7a0a6e0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCateByid",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyZGNkZDQwOC1iM2JhLTRmMDAtYmRhNy1lNGRiNmY0OTJlZTYiLCJleHAiOjE3MzY0MjkzODEsImlhdCI6MTcwMDE0MTM4MX0.HdxqE-jUPt3FhyBCo71Mqfe41THXxAr5SYL09AjtHSnzc4USUJ_XbL0AENBOFEuvJR9qbA6INarBgyhXHrzkHg",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/category/733d6018-09a3-4197-9e05-07efa0ee7e84",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"733d6018-09a3-4197-9e05-07efa0ee7e84"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Products Copy",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" : \"thinhtest@yopmail.com\",\r\n    \"password\" : \"thinh123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/auth/resetPassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"resetPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create cate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "vi-VN,vi;q=0.9"
+					},
+					{
+						"key": "Access-Control-Allow-Origin",
+						"value": "*"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyZGNkZDQwOC1iM2JhLTRmMDAtYmRhNy1lNGRiNmY0OTJlZTYiLCJleHAiOjE3MzY0MjkzODEsImlhdCI6MTcwMDE0MTM4MX0.HdxqE-jUPt3FhyBCo71Mqfe41THXxAr5SYL09AjtHSnzc4USUJ_XbL0AENBOFEuvJR9qbA6INarBgyhXHrzkHg"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:4200"
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:4200/"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-site"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"119\", \"Chromium\";v=\"119\", \"Not?A_Brand\";v=\"24\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer  {{ecomToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Walt TOKEN\",\r\n    \"parent\": \"733d6018-09a3-4197-9e05-07efa0ee7e84\",\r\n    \"thumbnail\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"category"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "ecomToken",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyZGNkZDQwOC1iM2JhLTRmMDAtYmRhNy1lNGRiNmY0OTJlZTYiLCJleHAiOjE3MzY0MzI5ODUsImlhdCI6MTcwMDE0NDk4NX0.wFW3Eb8ofXx0RVlewfHYf82qXhk53OLorV3akcr054eT2WJtadJQTsJMR4rqAFr1oOHUF_VZvSo44Cy8xbgZPw"
 		}
 	]
 }
