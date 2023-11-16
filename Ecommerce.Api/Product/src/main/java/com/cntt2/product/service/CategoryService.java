@@ -81,9 +81,9 @@ public class CategoryService {
                 if (parentCategory.isEmpty()) {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }
-            } else {
-                categoryData.get().setParent(request.parent());
             }
+            categoryData.get().setParent(request.parent());
+
         }
 
         return new ResponseEntity<>(categoryRepository.save(categoryData.get()), HttpStatus.OK);
