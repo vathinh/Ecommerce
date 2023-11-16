@@ -2,6 +2,7 @@ package com.cntt2.user.service;
 
 import com.cntt2.user.dto.AuthRequest;
 import com.cntt2.user.dto.AuthResponse;
+import com.cntt2.user.dto.UserResetPwd;
 import com.cntt2.user.model.Role;
 import com.cntt2.user.model.User;
 import com.cntt2.user.repository.RoleRepository;
@@ -61,9 +62,42 @@ public class AuthService {
     }
 
     public ResponseEntity<AuthResponse> signUp(AuthRequest.SignUpRequest request) {
-        List<Role> userRoles = setRoles(Arrays.asList("USER"));
+        List<Role> userRoles = setRoles(List.of("USER"));
 
-        User user = User.builder()
+        if (userExistsByEmail(request.email())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthResponse("Email is already registered"));
+        }
+
+        if (userExistsByUsername(request.username())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthResponse("Username is already registered"));
+        }
+
+        User user = createUser(request, userRoles);
+
+        // save data in db
+        User savedUser = userRepository.save(user);
+        System.out.println(savedUser);
+
+        // generate token
+        final String jwtToken = tokenManager.generateJwtToken(user.getId());
+
+        // generate data response
+        AuthResponse response = new AuthResponse(user);
+        response.setToken(jwtToken);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    private boolean userExistsByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    private boolean userExistsByUsername(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
+    private User createUser(AuthRequest.SignUpRequest request, List<Role> userRoles) {
+        return User.builder()
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
                 .fullname(request.fullname())
@@ -71,21 +105,8 @@ public class AuthService {
                 .phone(request.phone())
                 .roles(userRoles)
                 .build();
-
-        //save data in db
-        User saveUser = userRepository.save(user);
-        System.out.println(saveUser);
-
-
-        //generate token
-        final String jwtToken = tokenManager.generateJwtToken(user.getId());
-
-        //generate data response
-        AuthResponse response = new AuthResponse(user);
-        response.setToken(jwtToken);
-
-        return new ResponseEntity<AuthResponse>(response, HttpStatus.OK);
     }
+
 
     public UserDetails checkAuth(String tokenHeader) {
         String userId = null;
@@ -131,5 +152,18 @@ public class AuthService {
             }
         }
         return roles;
+    }
+
+    public ResponseEntity<String> resetPassword(UserResetPwd userResetPwd) {
+        return userRepository.findByEmail(userResetPwd.getEmail())
+                .map(user -> {
+                    user.setPassword(passwordEncoder.encode(userResetPwd.getPassword()));
+                    userRepository.save(user);
+                    return ResponseEntity.ok("Password reset successfully for user: " + user.getUsername());
+                })
+                .orElseGet(() ->
+                        ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body("User with email " + userResetPwd.getEmail() + " not found.")
+                );
     }
 }

@@ -1,6 +1,7 @@
 package com.cntt2.user.controller;
 
 import com.cntt2.user.dto.UserRequest;
+import com.cntt2.user.dto.UserResetPwd;
 import com.cntt2.user.model.User;
 import com.cntt2.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
