@@ -66,22 +66,29 @@ public class CategoryService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if(request.name() != null)
+        if (request.name() != null) {
             categoryData.get().setName(request.name());
             categoryData.get().setSlug(toSlug(request.name()));
-        if(request.thumbnail() != null)
+        }
+
+        if (request.thumbnail() != null) {
             categoryData.get().setThumbnail(request.thumbnail());
-        if(request.parent() != null) {
-            if(!request.parent().isEmpty()) {
-                Optional<Category> parentCatgory = categoryRepository.findById(request.parent());
-                if(parentCatgory.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if (request.parent() != null) {
+            if (!request.parent().isEmpty()) {
+                Optional<Category> parentCategory = categoryRepository.findById(request.parent());
+                if (parentCategory.isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
             } else {
                 categoryData.get().setParent(request.parent());
             }
         }
 
-        return new ResponseEntity<Category>(categoryRepository.save(categoryData.get()), HttpStatus.OK);
+        return new ResponseEntity<>(categoryRepository.save(categoryData.get()), HttpStatus.OK);
     }
+
 
     public ResponseEntity deleteCategory(String categoryId) {
         Optional<Category> categoryData = categoryRepository.findById(categoryId);
