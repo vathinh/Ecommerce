@@ -39,6 +39,8 @@ import { StatisticComponent } from './pages/dashboard/statistic/statistic.compon
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
+import { CategoryDetailComponent } from './pages/dashboard/productmanagement/category/category-detail/category-detail.component';
+import { BrandDetailComponent } from './pages/dashboard/productmanagement/brand/brand-detail/brand-detail.component';
 
 registerLocaleData(en);
 
@@ -56,7 +58,9 @@ registerLocaleData(en);
     DashboardComponent,
     CreateProductComponent,
     CreateBrandComponent,
+    BrandDetailComponent,
     CreateCategoryComponent,
+    CategoryDetailComponent,
     CreateUserComponent,
     UserDetailComponent,
     OrderDetailComponent,

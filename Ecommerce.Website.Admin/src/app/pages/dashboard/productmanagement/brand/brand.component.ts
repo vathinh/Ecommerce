@@ -51,4 +51,8 @@ export class BrandComponent implements OnInit {
       this.message.create('error', `Delete brand failed`);
     }
   }
+
+  navigateToBrandDetail(id: any) {
+    this.router.navigate(['dashboard/product-manage/brand-detail/' + id]);
+  }
 }

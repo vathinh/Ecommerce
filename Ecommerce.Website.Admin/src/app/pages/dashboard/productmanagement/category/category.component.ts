@@ -25,7 +25,6 @@ export class CategoryComponent implements OnInit {
   }
 
   async getCategories() {
-    let count = 0;
     await this.categoryService
       .getCategories()
       .then((response) => {
@@ -39,7 +38,6 @@ export class CategoryComponent implements OnInit {
 
         this.categoriesChildren.forEach((i: any) => {
           this.categoriesParent.forEach((j: any) => {
-            debugger;
             if (i.parent == j.id) {
               i['parentname'] = j.name;
             }
@@ -54,7 +52,7 @@ export class CategoryComponent implements OnInit {
       });
   }
 
-  async deleteBrand(id: any) {
+  async deleteCategory(id: any) {
     await this.categoryService
       .deleteCategory(id)
       .then((response) => {
@@ -75,8 +73,7 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  navigateToDetail(id: any) {
-    localStorage.setItem('categoryId', id);
+  navigateToCategoryDetail(id: any) {
     this.router.navigate(['dashboard/product-manage/category-detail/' + id]);
   }
 }

@@ -17,6 +17,12 @@ export class BrandService {
     return this.http.get(url).toPromise();
   }
 
+  getBrand(id: any) {
+    let url: string = `${this._apiBrandEndpoint}/${id}`;
+
+    return this.http.get(url).toPromise();
+  }
+
   createBrand(data: any) {
     let url: string = `${this._apiBrandEndpoint}`;
 
@@ -30,6 +36,21 @@ export class BrandService {
     };
 
     return this.http.post(url, data, options).toPromise();
+  }
+
+  updateBrand(data: any, id: any) {
+    let url: string = `${this._apiBrandEndpoint}/${id}`;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: '*/*',
+        'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${this.authorizeToken}`,
+      }),
+    };
+
+    return this.http.put(url, data, options).toPromise();
   }
 
   delete(id: any) {
