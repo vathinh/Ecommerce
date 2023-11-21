@@ -2,6 +2,7 @@ package com.cntt2.user.controller;
 
 import com.cntt2.user.dto.AuthRequest;
 import com.cntt2.user.dto.AuthResponse;
+import com.cntt2.user.dto.UserResetPwd;
 import com.cntt2.user.security.TokenManager;
 import com.cntt2.user.service.AuthService;
 import com.cntt2.user.service.UserService;
@@ -51,4 +52,10 @@ public class AuthController {
 
         return new ResponseEntity<UserDetails>(HttpStatus.BAD_REQUEST);
     }
+
+    @PutMapping("resetPassword")
+    public ResponseEntity<String> resetPassword(@RequestBody UserResetPwd userResetPwd) {
+        return authService.resetPassword(userResetPwd);
+    }
+
 }

@@ -1,12 +1,14 @@
 package com.cntt2.user.dto;
 
 import com.cntt2.user.model.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import java.util.Date;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL) // Exclude null fields from JSON serialization
 public class AuthResponse {
     private String token;
     private String id;
@@ -19,6 +21,7 @@ public class AuthResponse {
     private String avatar;
     private Date createdDate;
     private Date updatedDate;
+    private String errorMess;
 
     public AuthResponse(
             String token,
@@ -58,4 +61,9 @@ public class AuthResponse {
         this.createdDate = user.getCreatedDate();
         this.updatedDate = user.getUpdatedDate();
     }
+
+    public AuthResponse(String errorMess) {
+        this.errorMess = errorMess;
+    }
+
 }

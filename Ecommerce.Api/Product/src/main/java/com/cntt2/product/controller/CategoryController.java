@@ -14,7 +14,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/category")
-
 public record CategoryController(CategoryService categoryService) {
     //get all categories
     @GetMapping
