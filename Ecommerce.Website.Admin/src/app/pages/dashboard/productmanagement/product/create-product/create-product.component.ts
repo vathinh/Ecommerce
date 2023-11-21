@@ -3,7 +3,7 @@ import { ProductService } from './../product.service';
 import { BrandService } from './../../brand/brand.service';
 import { CategoryService } from './../../category/category.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -31,8 +31,9 @@ export class CreateProductComponent implements OnInit {
     private brandService: BrandService,
     private productService: ProductService,
     private message: NzMessageService,
-    private router: Router
+    private router: Router,
   ) {}
+
 
   async ngOnInit() {
     await this.getCategories();

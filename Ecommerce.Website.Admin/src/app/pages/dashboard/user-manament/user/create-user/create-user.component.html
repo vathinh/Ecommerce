@@ -10,8 +10,11 @@
             type="text"
             ngModel
             name="username"
+            required
+            #username="ngModel"
             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
+          <div *ngIf="username.errors?.['required']" class="text-red-500">Username is required.</div>
         </div>
 
         <div class="col-span-12">
@@ -22,8 +25,11 @@
             type="password"
             ngModel
             name="password"
+            required
+            #password="ngModel"
             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
+          <div *ngIf="password.errors?.['required']" class="text-red-500">Password is required.</div>
         </div>
 
         <div class="col-span-12">
@@ -34,8 +40,11 @@
             type="text"
             ngModel
             name="fullname"
+            required
+            #fullname="ngModel"
             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
+          <div *ngIf="fullname.errors?.['required']" class="text-red-500">Fullname is required.</div>
         </div>
 
         <div class="px-4 py-3 text-right flex">
@@ -47,6 +56,7 @@
             Back
           </button>
           <button
+            [disabled]="!form.valid"
             (click)="createUser(form.value)"
             class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >

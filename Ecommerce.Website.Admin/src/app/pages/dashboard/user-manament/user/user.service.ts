@@ -55,6 +55,21 @@ export class UserService {
     return this.http.post(url, data).toPromise();
   }
 
+  updateUser(data: any, id: any) {
+    let url: string = `${this._apiUserEndpoint}/${id}`;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: '*/*',
+        'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${this.authorizeToken}`,
+      }),
+    };
+
+    return this.http.put(url, data, options).toPromise();
+  }
+
   deleteUser(id: any) {
     let url: string = `${this._apiUserEndpoint}/${id}`;
 

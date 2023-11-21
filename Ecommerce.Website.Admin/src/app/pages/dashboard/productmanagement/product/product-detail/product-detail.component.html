@@ -10,8 +10,11 @@
             type="text"
             name="name"
             [(ngModel)]="productDetail.name"
+            required
+            #name="ngModel"
             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
+          <div *ngIf="name.errors?.['required']" class="text-red-500">Product name is required.</div>
         </div>
 
         <div class="col-span-6">
@@ -22,8 +25,11 @@
             type="number"
             [(ngModel)]="productDetail.price"
             name="price"
+            required
+            #price="ngModel"
             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
+          <div *ngIf="price.errors?.['required']" class="text-red-500">Price is required.</div>
         </div>
 
         <div class="col-span-6">
@@ -34,8 +40,11 @@
             type="number"
             [(ngModel)]="productDetail.quantity"
             name="quantity"
+            required
+            #quantity="ngModel"
             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
+          <div *ngIf="quantity.errors?.['required']" class="text-red-500">Quantity is required.</div>
         </div>
 
         <div class="col-span-4">
@@ -46,11 +55,14 @@
             class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             ngModel
             name="condition"
+            required
+            #condition="ngModel"
             [(ngModel)]="productDetail.condition"
           >
             <option value="New">New</option>
             <option value="Second-hand">Second-hand</option>
           </select>
+          <div *ngIf="condition.errors?.['required']" class="text-red-500">Condition is required.</div>
         </div>
 
         <div class="col-span-4">
@@ -61,6 +73,7 @@
             class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             ngModel
             name="category"
+            required
             #category="ngModel"
             [(ngModel)]="productDetail.category.id"
           >
@@ -69,6 +82,7 @@
               {{ category.name }}
             </option>
           </select>
+          <div *ngIf="category.errors?.['required']" class="text-red-500">Category is required.</div>
         </div>
 
         <div class="col-span-4">
@@ -77,6 +91,7 @@
             class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             ngModel
             name="brand"
+            required
             #brand="ngModel"
             [(ngModel)]="productDetail.brand.id"
           >
@@ -84,6 +99,7 @@
               {{ brand.name }}
             </option>
           </select>
+          <div *ngIf="brand.errors?.['required']" class="text-red-500">Brand is required.</div>
         </div>
 
         <div class="col-span-12">
@@ -97,7 +113,10 @@
             class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             [(ngModel)]="productDetail.description"
             placeholder=""
+            required
+            #description="ngModel"
           ></textarea>
+          <div *ngIf="description.errors?.['required']" class="text-red-500">Description is required.</div>
         </div>
         <div class="col-span-12">
           <div>
@@ -209,6 +228,7 @@
       </button>
       <button
         type="submit"
+        [disabled]="!form.valid"
         (click)="updateProduct(form.value)"
         class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
       >
