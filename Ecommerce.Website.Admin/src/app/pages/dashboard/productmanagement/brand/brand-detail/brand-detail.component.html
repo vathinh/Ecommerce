@@ -12,6 +12,7 @@
             name="name"
             required
             #name="ngModel"
+            [(ngModel)]="brandDetail.name"
             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
           <div *ngIf="name.errors?.['required']" class="text-red-500">Brand name is required.</div>
@@ -28,10 +29,10 @@
           <button
             type="submit"
             [disabled]="!form.valid"
-            (click)="createBrand(form.value)"
+            (click)="updateBrand(form.value)"
             class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
-            Create
+            Save
           </button>
         </div>
       </div>

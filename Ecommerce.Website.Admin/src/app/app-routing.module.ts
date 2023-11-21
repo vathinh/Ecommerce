@@ -20,6 +20,8 @@ import { ProductComponent } from './pages/dashboard/productmanagement/product/pr
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { CategoryDetailComponent } from './pages/dashboard/productmanagement/category/category-detail/category-detail.component';
+import { BrandDetailComponent } from './pages/dashboard/productmanagement/brand/brand-detail/brand-detail.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/dashboard/welcome' },
@@ -57,12 +59,20 @@ const routes: Routes = [
             component: CategoryComponent,
           },
           {
+            path: 'category-detail/:id',
+            component: CategoryDetailComponent,
+          },
+          {
             path: 'create-category',
             component: CreateCategoryComponent,
           },
           {
             path: 'brand',
             component: BrandComponent,
+          },
+          {
+            path: 'brand-detail/:id',
+            component: BrandDetailComponent,
           },
           {
             path: 'create-brand',

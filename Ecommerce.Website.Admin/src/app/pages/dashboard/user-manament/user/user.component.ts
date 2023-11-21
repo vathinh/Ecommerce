@@ -52,8 +52,7 @@ export class UserComponent implements OnInit {
     }
   }
 
-  gotoDetail(id: any) {
-    localStorage.setItem('guestId', id),
-      this.router.navigate(['/dashboard/user-manage/user-detail/' + id]);
+  navigateToUserDetail(id: any) {
+    this.router.navigate(['dashboard/user-manage/user-detail/' + id]);
   }
 }
