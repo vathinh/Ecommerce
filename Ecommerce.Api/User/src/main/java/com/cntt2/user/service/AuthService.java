@@ -2,6 +2,7 @@ package com.cntt2.user.service;
 
 import com.cntt2.user.dto.AuthRequest;
 import com.cntt2.user.dto.AuthResponse;
+import com.cntt2.user.dto.EmailRequest;
 import com.cntt2.user.dto.UserResetPwd;
 import com.cntt2.user.model.Role;
 import com.cntt2.user.model.User;
@@ -10,20 +11,25 @@ import com.cntt2.user.repository.UserRepository;
 import com.cntt2.user.security.TokenManager;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthService {
     @Autowired
     private final UserRepository userRepository;
@@ -37,31 +43,36 @@ public class AuthService {
     @Autowired
     private TokenManager tokenManager;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Value("${be.url}")
+    private String beUrl;
+
     public ResponseEntity<AuthResponse> signIn(AuthRequest.SignInRequest request) {
-        if(request.username().isEmpty() || request.password().isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (request.username().isEmpty() || request.password().isEmpty()) {
+            return ResponseEntity.badRequest().build();
         }
-        //get user
+
+        // Get user
         Optional<User> userData = userRepository.findByUsername(request.username());
 
-        if(userData.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        if(!passwordEncoder.matches(request.password(), userData.get().getPassword())) {
+        if (userData.isEmpty() || !passwordEncoder.matches(request.password(), userData.get().getPassword()) || userData.get().isActive()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        //generate token
+        // Generate token
         final String jwtToken = tokenManager.generateJwtToken(userData.get().getId());
 
-        //generate data response
+        // Generate data response
         AuthResponse response = new AuthResponse(userData.get());
         response.setToken(jwtToken);
 
-        return new ResponseEntity<AuthResponse>(response, HttpStatus.OK);
+        return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<AuthResponse> signUp(AuthRequest.SignUpRequest request) {
+
+    public ResponseEntity<AuthResponse> signUp(AuthRequest.SignUpRequest request) throws UnsupportedEncodingException, MessagingException {
         List<Role> userRoles = setRoles(List.of("USER"));
 
         if (userExistsByEmail(request.email())) {
@@ -74,19 +85,38 @@ public class AuthService {
 
         User user = createUser(request, userRoles);
 
-        // save data in db
-        User savedUser = userRepository.save(user);
-        System.out.println(savedUser);
+        String activeLink = String.format("<p>Hello %s,</p><p>Thank you for signing up with E Commerce! To activate your account, please click <a href=\"%s/%s\">here</a>.</p><p>Best regards,<br/>E Commerce Team</p>", user.getFullname(), beUrl, user.getEmail());
 
-        // generate token
+        // Save data in the database asynchronously
+        CompletableFuture.runAsync(() -> {
+            User savedUser = userRepository.save(user);
+            System.out.println(savedUser);
+        });
+
+        // Send email asynchronously
+        CompletableFuture.runAsync(() -> {
+            EmailRequest emailRequest = EmailRequest.builder()
+                    .recipient(user.getEmail())
+                    .subject("Active your account in E Commerce website")
+                    .msgBody(activeLink)
+                    .build();
+            try {
+                emailService.sendEmail(emailRequest);
+            } catch (UnsupportedEncodingException | MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // Generate token
         final String jwtToken = tokenManager.generateJwtToken(user.getId());
 
-        // generate data response
+        // Generate data response
         AuthResponse response = new AuthResponse(user);
         response.setToken(jwtToken);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
 
     private boolean userExistsByEmail(String email) {
         return userRepository.findByEmail(email).isPresent();
@@ -158,12 +188,46 @@ public class AuthService {
         return userRepository.findByEmail(userResetPwd.getEmail())
                 .map(user -> {
                     user.setPassword(passwordEncoder.encode(userResetPwd.getPassword()));
-                    userRepository.save(user);
+                    user.setActive(false);
+
+                    CompletableFuture.runAsync(() -> {
+                        userRepository.save(user);
+                    });
+
+                    String activeLink = String.format("<p>Hello %s,</p><p>Your request to reset password has been success! To reactivate your account, please click <a href=\"%s/%s\">here</a>.</p><p>Best regards,<br/>E Commerce Team</p>", user.getFullname(), beUrl, user.getEmail());
+                    EmailRequest emailRequest = EmailRequest.builder()
+                            .recipient(user.getEmail())
+                            .subject("Reactive your account in E Commerce website")
+                            .msgBody(activeLink)
+                            .build();
+                    try {
+                        CompletableFuture.runAsync(() -> {
+                            try {
+                                emailService.sendEmail(emailRequest);
+                            } catch (UnsupportedEncodingException | MessagingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
                     return ResponseEntity.ok("Password reset successfully for user: " + user.getUsername());
                 })
                 .orElseGet(() ->
                         ResponseEntity.status(HttpStatus.NOT_FOUND)
                                 .body("User with email " + userResetPwd.getEmail() + " not found.")
                 );
+
     }
+
+    public void activateAccount(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        userOptional.ifPresent(user -> {
+            user.setActive(true);
+            userRepository.save(user);
+        });
+    }
+
 }

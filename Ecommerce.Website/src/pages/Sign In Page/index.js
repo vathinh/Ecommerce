@@ -10,9 +10,10 @@ import {
 	OutlinedInput
 } from "@mui/material";
 import * as Actions from 'actions';
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import PasswordResetModal from "./PasswordResetModal";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const SignIn = () => {
   const [isStaySignedIn, setStaySignedIn] = React.useState(true);
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [isResetModalOpen, setResetModalOpen] = useState(false);
 
   const handleChangeForm = (e) => {
     setForm({
@@ -49,7 +51,16 @@ const SignIn = () => {
 	setLoading(false);
   };
 
-  useEffect(() => {
+    const handleOpenResetModal = () => {
+        setResetModalOpen(true);
+    };
+
+    const handleCloseResetModal = () => {
+        setResetModalOpen(false);
+    };
+
+
+    useEffect(() => {
 	if(isLogedIn) {
 	  navigate("/")
 	}
@@ -120,6 +131,18 @@ const SignIn = () => {
         >
           Sign in
         </Button>
+          <Button
+              className="text-blue-500 underline my-[12px]"
+              onClick={handleOpenResetModal}
+          >
+              Forgot Password?
+          </Button>
+          {/* Password reset modal */}
+        <PasswordResetModal
+            isOpen={isResetModalOpen}
+            handleClose={handleCloseResetModal} // Use handleCloseResetModal
+        />
+
       </form>
     </div>
   );
