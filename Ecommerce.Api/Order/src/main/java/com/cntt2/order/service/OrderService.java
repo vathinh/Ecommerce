@@ -143,4 +143,8 @@ public class OrderService {
         orderRepository.deleteById(orderId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    public ResponseEntity<List<Order>> exportOrders() {
+        return ResponseEntity.ok(orderRepository.findAll());
+    }
 }
