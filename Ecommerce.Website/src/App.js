@@ -5,6 +5,7 @@ import CartPage from "pages/Cart Page";
 import CategoryPage from "pages/Category Page";
 import CheckoutPage from "pages/Checkout Page";
 import HistoryPurchasePage from "pages/History Purchase Page";
+import AccountProfilePage from "pages/Account Profile Page";
 import HomePage from "pages/Home Page";
 import ProductDetail from "pages/Product Detail Page";
 import ProductListPage from "pages/Product List Page";
@@ -24,6 +25,7 @@ function App() {
 		  <Route path="/cart" element={<CartPage />} />
 		  <Route path="/checkout/:orderId" element={<CheckoutPage />} />
 		  <Route path="/account/purchase" element={<HistoryPurchasePage />} />
+		  <Route path="/account/profile" element={<AccountProfilePage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 		<Route element={<AuthLayout />}>
