@@ -1,6 +1,8 @@
+# Server Configuration
 server:
   port: 8081
 
+# Spring Configuration
 spring:
   application:
     name: user
@@ -17,6 +19,23 @@ spring:
         format_sql: true
     show-sql: true
 
+  # Mail Configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: thinhtvts2112016@fpt.edu.vn
+    password: qcnjbuknhghzdkdn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+      protocol: smtp
+      test-connection: false
+
+
+# Eureka Configuration
 eureka:
   instance:
     hostname: localhost
@@ -24,4 +43,15 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
+# Secret Configuration
 secret: somerandomsecret
+
+# Backend URL Configuration
+be:
+  url: http://localhost:8081/api/v1/auth/active-account
+
+# Frontend URL Configuration
+ecom:
+  url: http://localhost:3000/
+
+
