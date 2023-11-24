@@ -1,9 +1,15 @@
 package com.cntt2.order.controller;
 
-import com.cntt2.order.dto.ProductResponse;
 import com.cntt2.order.model.Order;
+import com.cntt2.order.service.ExcelServiceImpl;
 import com.cntt2.order.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +18,13 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/order")
-public record OrderController(OrderService orderService) {
+public class OrderController {
+
+    @Autowired
+    private ExcelServiceImpl fileService;
+
+    @Autowired
+    private OrderService orderService;
 
     //get all orders
     @GetMapping
@@ -54,4 +66,16 @@ public record OrderController(OrderService orderService) {
     public ResponseEntity deleteOrder(@PathVariable("orderId") String id) {
         return orderService.deleteOrder(id);
     }
+
+    @GetMapping("/download")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "statisticExport.xlsx";
+        InputStreamResource file = new InputStreamResource(fileService.load());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
+    }
+
 }

@@ -1,5 +1,10 @@
 <div class="items-center px-12 py-32">
   <nz-row [nzGutter]="16">
+    <nz-col [nzSpan]="24" class="text-left mt-4">
+      <button nz-button nzType="primary" (click)="downloadExcelFile()" class="download-button">
+        Download Excel
+      </button>
+    </nz-col>
     <nz-col [nzSpan]="12">
       <nz-statistic
         [nzValue]="(ordersSucess.length | number)!"
