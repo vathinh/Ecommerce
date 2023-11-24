@@ -1,9 +1,6 @@
 package com.cntt2.user.controller;
 
-import com.cntt2.user.dto.AuthRequest;
-import com.cntt2.user.dto.AuthResponse;
-import com.cntt2.user.dto.EmailRequest;
-import com.cntt2.user.dto.UserResetPwd;
+import com.cntt2.user.dto.*;
 import com.cntt2.user.security.TokenManager;
 import com.cntt2.user.service.AuthService;
 import com.cntt2.user.service.EmailService;
@@ -52,7 +49,7 @@ public class AuthController {
 
     //sign up
     @PostMapping(path = "signup")
-    public ResponseEntity<AuthResponse> signUp(@RequestBody AuthRequest.SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<SignUpResponse> signUp(@RequestBody AuthRequest.SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException {
         return authService.signUp((signUpRequest));
     }
 

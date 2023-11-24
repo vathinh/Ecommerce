@@ -1,9 +1,6 @@
 package com.cntt2.user.service;
 
-import com.cntt2.user.dto.AuthRequest;
-import com.cntt2.user.dto.AuthResponse;
-import com.cntt2.user.dto.EmailRequest;
-import com.cntt2.user.dto.UserResetPwd;
+import com.cntt2.user.dto.*;
 import com.cntt2.user.model.Role;
 import com.cntt2.user.model.User;
 import com.cntt2.user.repository.RoleRepository;
@@ -57,7 +54,7 @@ public class AuthService {
         // Get user
         Optional<User> userData = userRepository.findByUsername(request.username());
 
-        if (userData.isEmpty() || !passwordEncoder.matches(request.password(), userData.get().getPassword()) || userData.get().isActive()) {
+        if (userData.isEmpty() || !passwordEncoder.matches(request.password(), userData.get().getPassword()) || !userData.get().isActive()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -72,15 +69,15 @@ public class AuthService {
     }
 
 
-    public ResponseEntity<AuthResponse> signUp(AuthRequest.SignUpRequest request) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<SignUpResponse> signUp(AuthRequest.SignUpRequest request) throws UnsupportedEncodingException, MessagingException {
         List<Role> userRoles = setRoles(List.of("USER"));
 
         if (userExistsByEmail(request.email())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthResponse("Email is already registered"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new SignUpResponse("Email is already registered"));
         }
 
         if (userExistsByUsername(request.username())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthResponse("Username is already registered"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new SignUpResponse("Username is already registered"));
         }
 
         User user = createUser(request, userRoles);
@@ -107,14 +104,7 @@ public class AuthService {
             }
         });
 
-        // Generate token
-        final String jwtToken = tokenManager.generateJwtToken(user.getId());
-
-        // Generate data response
-        AuthResponse response = new AuthResponse(user);
-        response.setToken(jwtToken);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseEntity.ok(new SignUpResponse("Sign Up success"));
     }
 
 
