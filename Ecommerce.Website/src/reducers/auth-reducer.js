@@ -30,7 +30,7 @@ const authSlice = createSlice({
             localStorage.clear();
         });
         builder.addMatcher(
-            isAnyOf(Actions.signInAccount.fulfilled, Actions.signUpAccount.fulfilled),
+            isAnyOf(Actions.signInAccount.fulfilled),
             (state, action) => {
                 localStorage.setItem("user-info", JSON.stringify(action.payload));
                 localStorage.setItem("token", action.payload.token);

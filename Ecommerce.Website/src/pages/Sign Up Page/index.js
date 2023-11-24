@@ -17,8 +17,6 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLogedIn = useSelector(({ auth }) => auth.isLogedIn);
-
   const [form, setForm] = React.useState({
     username: "",
     password: "",
@@ -106,22 +104,25 @@ const SignUp = () => {
   };
 
   // handle sign up
-  const handleSignUp = (e) => {
+// handle sign up
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       setLoading(true);
-      dispatch(Actions.signUpAccount(form));
-      setLoading(false);
+      try {
+        // Dispatch the signup action
+        await dispatch(Actions.signUpAccount(form));
+        // Redirect to "/" after successful signup
+        navigate("/");
+      } catch (error) {
+        // Handle any errors if needed
+        console.error("Signup failed:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
-
-  useEffect(() => {
-    if (isLogedIn) {
-      navigate("/");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogedIn]);
 
   return (
       <div className="w-full md:max-w-[440px] mx-auto text-center">
