@@ -69,7 +69,7 @@ public class OrderController {
 
     @GetMapping("/download")
     public ResponseEntity<Resource> getFile() {
-        String filename = "tutorials.xlsx";
+        String filename = "statisticExport.xlsx";
         InputStreamResource file = new InputStreamResource(fileService.load());
 
         return ResponseEntity.ok()
