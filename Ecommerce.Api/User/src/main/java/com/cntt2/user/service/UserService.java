@@ -20,7 +20,7 @@ public class UserService {
     ///////////////////////////////////////////////////////////
 
     public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+        return ResponseEntity.ok(userRepository.findAllUsersNotInRoleAdmin());
     }
 
     public ResponseEntity<User> getSingleUser(String userId) {
@@ -45,7 +45,12 @@ public class UserService {
             userData.get().setFullname(request.fullname());
         if(request.avatar() != null)
             userData.get().setAvatar(request.avatar());
-
+        if(request.email() != null)
+            userData.get().setEmail(request.email());
+        if(request.phone() != null) {
+            Long phoneNum = Long.parseLong(request.phone());
+            userData.get().setPhone(phoneNum);
+        }
 
         return new ResponseEntity<User>(
                 userRepository.save(userData.get()),

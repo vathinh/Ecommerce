@@ -6,7 +6,9 @@ public record UserRequest (
         String username,
         String password,
         String fullname,
-        String avatar
+        String avatar,
+        String phone,
+        String email
 ) {
 
 }

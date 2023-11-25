@@ -11,4 +11,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
-}
+
+    @Query(value = "SELECT * FROM users u " +
+            "JOIN users_roles ur ON u.id = ur.user_id " +
+            "JOIN role r ON ur.role_id = r.id " +
+            "WHERE r.name <> 'ADMIN'", nativeQuery = true)
+    List<User> findAllUsersNotInRoleAdmin();}
