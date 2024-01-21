@@ -19,11 +19,10 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Set working directory
-        run: cd Ecommerce.Api
-
       - name: Build with Maven
         run: mvn clean install
+        working-directory: Ecommerce.Api
 
       - name: Run Tests
         run: mvn test
+        working-directory: Ecommerce.Api
