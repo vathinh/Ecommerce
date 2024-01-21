@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
 
       - name: Set working directory
-        run: cd Ecommerce/Ecommerce.Api
+        run: cd Ecommerce.Api
 
       - name: Build with Maven
         run: mvn clean install
